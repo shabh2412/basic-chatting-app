@@ -24,7 +24,7 @@ io.on("connection", function (socket) {
 	const clientId = id;
 	socket.emit("new client", clientId);
 
-	socket.on("new message", (message) => {
+	socket.on("new message", (message: string) => {
 		// console.log(`Client_${clientId} says: ${message}`);
 		io.emit("new message", message);
 	});
