@@ -27,7 +27,7 @@ io.on("connection", function (socket) {
 
 	socket.on("new message", (message: string) => {
 		// console.log(`Client_${clientId} says: ${message}`);
-		io.emit("new message", message);
+		io.emit("new message", { message, clientId });
 	});
 
 	//Whenever someone disconnects this piece of code executed

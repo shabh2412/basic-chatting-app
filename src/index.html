@@ -34,7 +34,7 @@
 			<h2 class="text-center mt-5 mb-3">Basic Chatting App</h2>
 			<div class="row justify-content-center">
 				<div
-					class="col-6 border my-3 d-flex flex-column justify-content-end gap-2"
+					class="col-sm-10 col-md-8 col-lg-8 col-6 border my-3 d-flex flex-column justify-content-end gap-2"
 					style="height: 70vh"
 				>
 					<div
@@ -79,16 +79,16 @@
 		});
 
 		const messagesContainer = document.getElementById("messagesContainer");
-		socket.on("new message", (message) => {
+		socket.on("new message", (data) => {
 			const messageCard = document.createElement("div");
 			messageCard.classList = "my-2 card";
 			const messageBody = document.createElement("div");
 			messageBody.classList = "card-body";
 			const cardTitle = document.createElement("div");
 			cardTitle.classList = "card-title";
-			cardTitle.innerText = `User #${userId}`;
+			cardTitle.innerText = `User #${data.clientId}`;
 			const cardText = document.createElement("div");
-			cardText.innerText = `${message}`;
+			cardText.innerText = `${data.message}`;
 			// `
 			// <div class="card my-2">
 			// 	<div class="card-body">
