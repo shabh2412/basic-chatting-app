@@ -11,7 +11,7 @@ const io = new Server(httpServer, {});
 // console.log(io);
 
 app.get("/", (req, res) => {
-	res.sendFile(`${__dirname}/index.html`);
+	res.sendFile(`${__dirname}../src/index.html`);
 });
 
 let totalUsers = 0;
