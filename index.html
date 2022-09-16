@@ -1,0 +1,111 @@
+<!DOCTYPE html>
+<html lang="en">
+	<head>
+		<meta charset="utf-8" />
+		<meta name="viewport" content="width=device-width, initial-scale=1" />
+		<title>Bootstrap demo</title>
+		<link
+			href="https://cdn.jsdelivr.net/npm/bootstrap@5.2.1/dist/css/bootstrap.min.css"
+			rel="stylesheet"
+			integrity="sha384-iYQeCzEYFbKjA/T2uDLTpkwGzCiq6soy8tYaI1GyVh/UjpbCx/TYkiZhlZB6+fzT"
+			crossorigin="anonymous"
+		/>
+		<script
+			src="https://cdn.socket.io/4.5.0/socket.io.min.js"
+			integrity="sha384-7EyYLQZgWBi67fBtVxw60/OWl1kjsfrPFcaU0pp0nAh+i8FD068QogUvg85Ewy1k"
+			crossorigin="anonymous"
+		></script>
+		<style>
+			#messagesContainer::-webkit-scrollbar {
+				width: 0.5em;
+			}
+			#messagesContainer::-webkit-scrollbar-track {
+				box-shadow: inset 0 0 6px rgba(0, 0, 0, 0.3);
+			}
+
+			#messagesContainer::-webkit-scrollbar-thumb {
+				background: rgb(0, 0, 0);
+				border-radius: 5px;
+			}
+		</style>
+	</head>
+	<body>
+		<div class="container">
+			<h2 class="text-center mt-5 mb-3">Basic Chatting App</h2>
+			<div class="row justify-content-center">
+				<div
+					class="col-6 border my-3 d-flex flex-column justify-content-end gap-2"
+					style="height: 70vh"
+				>
+					<div
+						class="border my-2 px-2"
+						style="height: 90%; overflow-y: auto; overflow-x: hidden"
+						id="messagesContainer"
+					></div>
+					<div class="form-floating my-2">
+						<input
+							type="text"
+							name="messageByUser"
+							id="messageByUser"
+							class="form-control"
+							placeholder="Enter a message"
+						/><label class="text-secondary" id="inputLabel" for="messageByUser"
+							>Enter a message</label
+						>
+					</div>
+				</div>
+			</div>
+		</div>
+	</body>
+	<script>
+		// MAKE A CONNECTION WITH THE SOCKET;
+		var socket = io();
+		const inputTag = document.getElementById("messageByUser");
+		inputTag.addEventListener("keypress", (e) => {
+			if (e.key === "Enter") {
+				const message = inputTag.value;
+				inputTag.value = "";
+				socket.emit("new message", message);
+			}
+			// console.log(e.key);
+		});
+		const inputLabel = document.getElementById("inputLabel");
+		let userId = 0;
+
+		socket.on("new client", (clientId) => {
+			// alert(`hello! your client id is: ${clientId}`);
+			userId = clientId;
+			inputLabel.innerText = `Sending message as User#${clientId}. Hit enter to send the message.`;
+		});
+
+		const messagesContainer = document.getElementById("messagesContainer");
+		socket.on("new message", (message) => {
+			const messageCard = document.createElement("div");
+			messageCard.classList = "my-2 card";
+			const messageBody = document.createElement("div");
+			messageBody.classList = "card-body";
+			const cardTitle = document.createElement("div");
+			cardTitle.classList = "card-title";
+			cardTitle.innerText = `User #${userId}`;
+			const cardText = document.createElement("div");
+			cardText.innerText = `${message}`;
+			// `
+			// <div class="card my-2">
+			// 	<div class="card-body">
+			// 		<div class="card-title">User #${userId}</div>
+			// 		<div class="card-text">${message}</div>
+			// 	</div>
+			// </div>
+			// `
+			messageBody.append(cardTitle, cardText);
+			messageCard.append(messageBody);
+			messagesContainer.append(messageCard);
+			messagesContainer.scrollTop = messagesContainer.scrollHeight;
+		});
+	</script>
+</html>
+<script
+	src="https://cdn.jsdelivr.net/npm/bootstrap@5.2.1/dist/js/bootstrap.bundle.min.js"
+	integrity="sha384-u1OknCvxWvY5kfmNBILK2hRnQC3Pr17a+RTT6rIHI7NnikvbZlHgTPOOmMi466C8"
+	crossorigin="anonymous"
+></script>
