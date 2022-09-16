@@ -1,5 +1,5 @@
 {
-	"name": "d3-socket.io",
+	"name": "socket-io-chatting-application",
 	"version": "1.0.0",
 	"description": "",
 	"main": "index.js",
