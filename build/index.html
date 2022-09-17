@@ -88,6 +88,8 @@
 	<script>
 		// MAKE A CONNECTION WITH THE SOCKET;
 		var socket = io();
+		const name = prompt("enter a username");
+		if (name.length > 0) socket.emit("setClientUsername", name);
 		const inputTag = document.getElementById("messageByUser");
 		inputTag.addEventListener("keypress", (e) => {
 			if (e.key === "Enter") {
@@ -103,7 +105,7 @@
 		socket.on("new client", ({ clientId, history }) => {
 			// alert(`hello! your client id is: ${clientId}`);
 			userId = clientId;
-			inputLabel.innerText = `Sending message as User#${clientId}. Hit enter to send the message.`;
+			inputLabel.innerText = `Hit enter to send the message.`;
 			history.forEach((data) => {
 				const messageCard = document.createElement("div");
 				messageCard.classList = "my-2 card";
@@ -111,7 +113,10 @@
 				messageBody.classList = "card-body";
 				const cardTitle = document.createElement("div");
 				cardTitle.classList = "card-title";
-				cardTitle.innerText = `User #${data.clientId}`;
+				const title = document.createElement("small");
+				title.classList = "text-decoration-underline";
+				title.innerText = `${data.clientName}`;
+				cardTitle.append(title);
 				const cardText = document.createElement("div");
 				cardText.innerText = `${data.message}`;
 				messageBody.append(cardTitle, cardText);
@@ -129,7 +134,10 @@
 			messageBody.classList = "card-body";
 			const cardTitle = document.createElement("div");
 			cardTitle.classList = "card-title";
-			cardTitle.innerText = `User #${data.clientId}`;
+			const title = document.createElement("small");
+			title.classList = "text-decoration-underline";
+			title.innerText = `${data.clientName}`;
+			cardTitle.append(title);
 			const cardText = document.createElement("div");
 			cardText.innerText = `${data.message}`;
 			// `
