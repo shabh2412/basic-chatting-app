@@ -88,7 +88,8 @@
 	<script>
 		// MAKE A CONNECTION WITH THE SOCKET;
 		var socket = io();
-		const name = prompt("enter a username");
+		const name = localStorage.getItem("clientName") || "enter a username";
+		localStorage.setItem("clientName", name);
 		if (name.length > 0) socket.emit("setClientUsername", name);
 		const inputTag = document.getElementById("messageByUser");
 		inputTag.addEventListener("keypress", (e) => {
