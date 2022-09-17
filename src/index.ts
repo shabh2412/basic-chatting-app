@@ -25,12 +25,18 @@ io.on("connection", function (socket) {
 	console.log({ totalUsers });
 	id++;
 	const clientId = id;
+	let clientName = `Guest #${clientId}`;
 	socket.emit("new client", { clientId, history });
+
+	socket.on("setClientUsername", (username: string) => {
+		clientName = username;
+	});
 
 	socket.on("new message", (message: string) => {
 		// console.log(`Client_${clientId} says: ${message}`);
 		const msg: MessageType = {
 			message,
+			clientName,
 			clientId,
 		};
 		history.push(msg);
