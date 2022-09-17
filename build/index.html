@@ -100,10 +100,25 @@
 		const inputLabel = document.getElementById("inputLabel");
 		let userId = 0;
 
-		socket.on("new client", (clientId) => {
+		socket.on("new client", ({ clientId, history }) => {
 			// alert(`hello! your client id is: ${clientId}`);
 			userId = clientId;
 			inputLabel.innerText = `Sending message as User#${clientId}. Hit enter to send the message.`;
+			history.forEach((data) => {
+				const messageCard = document.createElement("div");
+				messageCard.classList = "my-2 card";
+				const messageBody = document.createElement("div");
+				messageBody.classList = "card-body";
+				const cardTitle = document.createElement("div");
+				cardTitle.classList = "card-title";
+				cardTitle.innerText = `User #${data.clientId}`;
+				const cardText = document.createElement("div");
+				cardText.innerText = `${data.message}`;
+				messageBody.append(cardTitle, cardText);
+				messageCard.append(messageBody);
+				messagesContainer.append(messageCard);
+			});
+			messagesContainer.scrollTop = messagesContainer.scrollHeight;
 		});
 
 		const messagesContainer = document.getElementById("messagesContainer");
